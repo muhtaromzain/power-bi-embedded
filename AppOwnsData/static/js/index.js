@@ -18,9 +18,15 @@ $(function () {
         // }
     };
 
+    var workspace_id        = ''
+    var report_id           = ''
+    var tenant_id           = ''
+    var client_id           = ''
+    var client_secret       = ''
+
     $.ajax({
         type: "GET",
-        url: "/getembedinfo",
+        url: "/getembedinfo/" + workspace_id + "/" + report_id + "/" + tenant_id + "/" + client_id + "/" + client_secret,
         dataType: "json",
         success: function (data) {
             embedData = $.parseJSON(JSON.stringify(data));

@@ -20,16 +20,16 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/getembedinfo', methods=['GET'])
-def get_embed_info():
+@app.route('/getembedinfo/<workspace_id>/<report_id>/<tenant_id>/<client_id>/<client_secret>', methods=['GET'])
+def get_embed_info(workspace_id, report_id, tenant_id, client_id, client_secret):
     '''Returns report embed configuration'''
 
-    config_result = Utils.check_config(app)
+    config_result = Utils.check_configuration(app, workspace_id, report_id, tenant_id, client_id, client_secret)
     if config_result is not None:
         return json.dumps({'errorMsg': config_result}), 500
 
     try:
-        embed_info = PbiEmbedService().get_embed_params_for_single_report(app.config['WORKSPACE_ID'], app.config['REPORT_ID'])
+        embed_info = PbiEmbedService().get_embed_params_for_single_report(workspace_id, report_id, tenant_id, client_id, client_secret)
         return embed_info
     except Exception as ex:
         return json.dumps({'errorMsg': str(ex)}), 500

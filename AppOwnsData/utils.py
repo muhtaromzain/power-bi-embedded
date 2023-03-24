@@ -37,3 +37,38 @@ class Utils:
             return 'Authority URL is not provided in the config.py file'
         
         return None
+
+    def check_configuration(app, workspace_id, report_id, tenant_id, client_id, client_secret):
+        '''Returns a message to user for missing configuration
+
+        Args:
+            app (Flask): Flask app object
+
+        Returns:
+            string: Error info
+        '''
+
+        if app.config['AUTHENTICATION_MODE'] == '':
+            return 'Please specify one of the two authentication modes'
+        if app.config['AUTHENTICATION_MODE'].lower() == 'serviceprincipal' and tenant_id == '':
+            return 'Tenant ID is not provided in the config.py file'
+        elif report_id == '':
+            return 'Report ID is not provided in config.py file'
+        elif workspace_id == '':
+            return 'Workspace ID is not provided in config.py file'
+        elif client_id == '':
+            return 'Client ID is not provided in config.py file'
+        elif app.config['AUTHENTICATION_MODE'].lower() == 'masteruser':
+            if app.config['POWER_BI_USER'] == '':
+                return 'Master account username is not provided in config.py file'
+            elif app.config['POWER_BI_PASS'] == '':
+                return 'Master account password is not provided in config.py file'
+        elif app.config['AUTHENTICATION_MODE'].lower() == 'serviceprincipal':
+            if client_secret == '':
+                return 'Client secret is not provided in config.py file'
+        elif app.config['SCOPE_BASE'] == '':
+            return 'Scope base is not provided in the config.py file'
+        elif app.config['AUTHORITY_URL'] == '':
+            return 'Authority URL is not provided in the config.py file'
+        
+        return None

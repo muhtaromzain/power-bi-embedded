@@ -12,7 +12,7 @@ import json
 
 class PbiEmbedService:
 
-    def get_embed_params_for_single_report(self, workspace_id, report_id, additional_dataset_id=None):
+    def get_embed_params_for_single_report(self, workspace_id, report_id, tenant_id, client_id, client_secret, additional_dataset_id=None):
         '''Get embed params for a report and a workspace
 
         Args:
@@ -25,7 +25,7 @@ class PbiEmbedService:
         '''
 
         report_url = f'https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/reports/{report_id}'       
-        api_response = requests.get(report_url, headers=self.get_request_header())
+        api_response = requests.get(report_url, headers=self.get_request_header(tenant_id, client_id, client_secret))
 
         if api_response.status_code != 200:
             abort(api_response.status_code, description=f'Error while retrieving Embed URL\n{api_response.reason}:\t{api_response.text}\nRequestId:\t{api_response.headers.get("RequestId")}')
@@ -38,11 +38,11 @@ class PbiEmbedService:
         if additional_dataset_id is not None:
             dataset_ids.append(additional_dataset_id)
 
-        embed_token = self.get_embed_token_for_single_report_single_workspace(report_id, dataset_ids, workspace_id)
+        embed_token = self.get_embed_token_for_single_report_single_workspace(report_id, dataset_ids, workspace_id, tenant_id, client_id, client_secret)
         embed_config = EmbedConfig(embed_token.tokenId, embed_token.token, embed_token.tokenExpiry, [report.__dict__])
         return json.dumps(embed_config.__dict__)
 
-    def get_embed_params_for_multiple_reports(self, workspace_id, report_ids, additional_dataset_ids=None):
+    def get_embed_params_for_multiple_reports(self, workspace_id, report_ids, tenant_id, client_id, client_secret, additional_dataset_ids=None):
         '''Get embed params for multiple reports for a single workspace
 
         Args:
@@ -63,7 +63,7 @@ class PbiEmbedService:
 
         for report_id in report_ids:
             report_url = f'https://api.powerbi.com/v1.0/myorg/groups/{workspace_id}/reports/{report_id}'
-            api_response = requests.get(report_url, headers=self.get_request_header())
+            api_response = requests.get(report_url, headers=self.get_request_header(tenant_id, client_id, client_secret))
 
             if api_response.status_code != 200:
                 abort(api_response.status_code, description=f'Error while retrieving Embed URL\n{api_response.reason}:\t{api_response.text}\nRequestId:\t{api_response.headers.get("RequestId")}')
@@ -77,11 +77,11 @@ class PbiEmbedService:
         if additional_dataset_ids is not None:
             dataset_ids.extend(additional_dataset_ids)
 
-        embed_token = self.get_embed_token_for_multiple_reports_single_workspace(report_ids, dataset_ids, workspace_id)
+        embed_token = self.get_embed_token_for_multiple_reports_single_workspace(report_ids, dataset_ids, workspace_id, tenant_id, client_id, client_secret)
         embed_config = EmbedConfig(embed_token.tokenId, embed_token.token, embed_token.tokenExpiry, reports)
         return json.dumps(embed_config.__dict__)
 
-    def get_embed_token_for_single_report_single_workspace(self, report_id, dataset_ids, target_workspace_id=None):
+    def get_embed_token_for_single_report_single_workspace(self, report_id, dataset_ids, target_workspace_id=None, tenant_id = "", client_id = "", client_secret = ""):
         '''Get Embed token for single report, multiple datasets, and an optional target workspace
 
         Args:
@@ -105,7 +105,7 @@ class PbiEmbedService:
 
         # Generate Embed token for multiple workspaces, datasets, and reports. Refer https://aka.ms/MultiResourceEmbedToken
         embed_token_api = 'https://api.powerbi.com/v1.0/myorg/GenerateToken'
-        api_response = requests.post(embed_token_api, data=json.dumps(request_body.__dict__), headers=self.get_request_header())
+        api_response = requests.post(embed_token_api, data=json.dumps(request_body.__dict__), headers=self.get_request_header(tenant_id, client_id, client_secret))
 
         if api_response.status_code != 200:
             abort(api_response.status_code, description=f'Error while retrieving Embed token\n{api_response.reason}:\t{api_response.text}\nRequestId:\t{api_response.headers.get("RequestId")}')
@@ -114,7 +114,7 @@ class PbiEmbedService:
         embed_token = EmbedToken(api_response['tokenId'], api_response['token'], api_response['expiration'])
         return embed_token
 
-    def get_embed_token_for_multiple_reports_single_workspace(self, report_ids, dataset_ids, target_workspace_id=None):
+    def get_embed_token_for_multiple_reports_single_workspace(self, report_ids, dataset_ids, target_workspace_id=None, tenant_id = "", client_id = "", client_secret = ""):
         '''Get Embed token for multiple reports, multiple dataset, and an optional target workspace
 
         Args:
@@ -141,7 +141,7 @@ class PbiEmbedService:
 
         # Generate Embed token for multiple workspaces, datasets, and reports. Refer https://aka.ms/MultiResourceEmbedToken
         embed_token_api = 'https://api.powerbi.com/v1.0/myorg/GenerateToken'
-        api_response = requests.post(embed_token_api, data=json.dumps(request_body.__dict__), headers=self.get_request_header())
+        api_response = requests.post(embed_token_api, data=json.dumps(request_body.__dict__), headers=self.get_request_header(tenant_id, client_id, client_secret))
 
         if api_response.status_code != 200:
             abort(api_response.status_code, description=f'Error while retrieving Embed token\n{api_response.reason}:\t{api_response.text}\nRequestId:\t{api_response.headers.get("RequestId")}')
@@ -150,7 +150,7 @@ class PbiEmbedService:
         embed_token = EmbedToken(api_response['tokenId'], api_response['token'], api_response['expiration'])
         return embed_token
 
-    def get_embed_token_for_multiple_reports_multiple_workspaces(self, report_ids, dataset_ids, target_workspace_ids=None):
+    def get_embed_token_for_multiple_reports_multiple_workspaces(self, report_ids, dataset_ids, target_workspace_ids=None, tenant_id = "", client_id = "", client_secret = ""):
         '''Get Embed token for multiple reports, multiple datasets, and optional target workspaces
 
         Args:
@@ -178,7 +178,7 @@ class PbiEmbedService:
 
         # Generate Embed token for multiple workspaces, datasets, and reports. Refer https://aka.ms/MultiResourceEmbedToken
         embed_token_api = 'https://api.powerbi.com/v1.0/myorg/GenerateToken'
-        api_response = requests.post(embed_token_api, data=json.dumps(request_body.__dict__), headers=self.get_request_header())
+        api_response = requests.post(embed_token_api, data=json.dumps(request_body.__dict__), headers=self.get_request_header(tenant_id, client_id, client_secret))
 
         if api_response.status_code != 200:
             abort(api_response.status_code, description=f'Error while retrieving Embed token\n{api_response.reason}:\t{api_response.text}\nRequestId:\t{api_response.headers.get("RequestId")}')
@@ -187,11 +187,11 @@ class PbiEmbedService:
         embed_token = EmbedToken(api_response['tokenId'], api_response['token'], api_response['expiration'])
         return embed_token
 
-    def get_request_header(self):
+    def get_request_header(self, tenant_id = "", client_id = "", client_secret = ""):
         '''Get Power BI API request header
 
         Returns:
             Dict: Request header
         '''
 
-        return {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AadService.get_access_token()}
+        return {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + AadService.get_access_token(tenant_id, client_id, client_secret)}
