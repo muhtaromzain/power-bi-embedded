@@ -28,16 +28,14 @@ Follow the steps on [aka.ms/EmbedForCustomer](https://aka.ms/embedforcustomer)
 
 2. Open [AppOwnsData](./AppOwnsData) folder.
 
-3. Rename [config_example.py](./AppOwnsData/config_example.py) to [config.py](./AppOwnsData/config.py).
+3. Fill in the required parameters in the [config.py](./AppOwnsData/config.py) file related to AAD app, Power BI user account information (If only use MasterUser authentication mode).
 
-4. Fill in the required parameters in the [config.py](./AppOwnsData/config.py) file related to AAD app, Power BI report, workspace, and user account information.
-
-5. Run the following command in CMD/PowerShell to start the application.<br>
+4. Run the following command in CMD/PowerShell to start the application.<br>
 
    `flask run`
 
 
-6. Open **http://localhost:5000** in browser or follow the direction in the output log.
+5. Open **http://localhost:5000** in browser or follow the direction in the output log.
 
 > **Note:** Whenever you update the config file you must restart the app.
 
