@@ -4,12 +4,14 @@
 from services.pbiembedservice import PbiEmbedService
 from utils import Utils
 from flask import Flask, render_template, send_from_directory
+from flask_lt import run_with_lt
 import json
 import os
 from services.aadservice import AadService
 
 # Initialize the Flask app
 app = Flask(__name__)
+run_with_lt(app)
 
 # Load configuration
 app.config.from_object('config.BaseConfig')
