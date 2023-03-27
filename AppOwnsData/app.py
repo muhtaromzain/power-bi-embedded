@@ -4,14 +4,14 @@
 from services.pbiembedservice import PbiEmbedService
 from utils import Utils
 from flask import Flask, render_template, send_from_directory
-from flask_lt import run_with_lt
+from flask_cors import CORS, cross_origin
 import json
 import os
 from services.aadservice import AadService
 
 # Initialize the Flask app
 app = Flask(__name__)
-run_with_lt(app)
+cors = CORS(app)
 
 # Load configuration
 app.config.from_object('config.BaseConfig')
@@ -23,6 +23,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/getembedinfo/<workspace_id>/<report_id>/<tenant_id>/<client_id>/<client_secret>', methods=['GET'])
+@cross_origin()
 def get_embed_info(workspace_id, report_id, tenant_id, client_id, client_secret):
     '''Returns report embed configuration'''
 

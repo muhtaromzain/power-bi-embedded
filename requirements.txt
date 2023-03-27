@@ -1,4 +1,4 @@
 flask
 requests
 msal
-flask-localtunnel
+Flask-Cors
