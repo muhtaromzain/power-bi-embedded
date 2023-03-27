@@ -11,7 +11,21 @@ $(function () {
     var reportLoadConfig = {
         type: "report",
         tokenType: models.TokenType.Embed,
-
+        settings: {
+            background: models.BackgroundType.Transparent,
+            layoutType: models.LayoutType.Custom,
+            customLayout: {
+                displayOption: models.DisplayOption.FitToWidth
+            },
+            panes: {
+                filters: {
+                    visible: false
+                },
+                pageNavigation: {
+                    visible: false
+                }
+            }
+        }
         // Enable this setting to remove gray shoulders from embedded report
         // settings: {
         //     background: models.BackgroundType.Transparent
