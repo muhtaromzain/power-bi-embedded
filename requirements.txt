@@ -2,3 +2,4 @@ flask
 requests
 msal
 Flask-Cors
+pycryptodome
