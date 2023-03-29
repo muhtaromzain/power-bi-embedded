@@ -17,3 +17,6 @@ class BaseConfig(object):
     
     # Master user email password. Required only for MasterUser authentication mode.
     POWER_BI_PASS = ''
+
+    # AES passphrase
+    AES_KEY = ''
