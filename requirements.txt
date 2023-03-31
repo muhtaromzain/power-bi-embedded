@@ -3,3 +3,4 @@ requests
 msal
 Flask-Cors
 pycryptodome
+gunicorn
