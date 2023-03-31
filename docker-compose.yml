@@ -1,0 +1,7 @@
+version: '3'
+name: power-bi-service
+services:
+  power-bi-service:
+    image: power-bi-service
+    ports:
+      - "5058:80"

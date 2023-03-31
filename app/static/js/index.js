@@ -32,11 +32,11 @@ $(function () {
         // }
     };
 
-    var workspace_id        = ''
-    var report_id           = ''
-    var tenant_id           = ''
-    var client_id           = ''
-    var client_secret       = ''
+    var workspace_id        = '';
+    var report_id           = '';
+    var tenant_id           = '';
+    var client_id           = '';
+    var client_secret       = '';
 
     $.ajax({
         type: "GET",
