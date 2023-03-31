@@ -13,6 +13,8 @@
 Follow the steps on [aka.ms/EmbedForCustomer](https://aka.ms/embedforcustomer)
 
 
+## Setup fo local
+
 ### Set up Python Flask on a Windows machine
 
 1. [Install](https://docs.python.org/3/using/index.html) [Python 3](https://www.python.org/downloads/) and add its installation path to the *Path* environment variable.
@@ -26,9 +28,9 @@ Follow the steps on [aka.ms/EmbedForCustomer](https://aka.ms/embedforcustomer)
 
 1. Open IDE.
 
-2. Open [AppOwnsData](./AppOwnsData) folder.
+2. Open [app](./app) folder.
 
-3. Fill in the required parameters in the [config.py](./AppOwnsData/config.py) file related to AAD app, Power BI user account information (If only use MasterUser authentication mode).
+3. Fill in the required parameters in the [config.py](./app/config.py) file related to AAD app, Power BI user account information (If only use MasterUser authentication mode).
 
 4. Run the following command in CMD/PowerShell to start the application.<br>
 
@@ -38,6 +40,26 @@ Follow the steps on [aka.ms/EmbedForCustomer](https://aka.ms/embedforcustomer)
 5. Open **http://localhost:5000** in browser or follow the direction in the output log.
 
 > **Note:** Whenever you update the config file you must restart the app.
+
+
+## Setup fo Docker
+
+
+1. Open IDE.
+
+2. Open [app](./app) folder.
+
+3. Fill in the required parameters in the [config.py](./app/config.py) file related to AAD app, Power BI user account information (If only use MasterUser authentication mode).
+
+4. Run the following command in CMD/PowerShell to build docker image.<br>
+
+   `docker build -t power-bi-service .`
+
+4. Run the following command in CMD/PowerShell to run docker container.<br>
+
+   `docker-compose up -d`
+
+5. Open **http://localhost:5058** in browser or follow the direction in the output log.
 
 #### Supported browsers:
 
